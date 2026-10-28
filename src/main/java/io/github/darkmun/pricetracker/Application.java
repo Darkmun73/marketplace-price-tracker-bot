@@ -1,4 +1,4 @@
-package io.github.darkmun.pricenotifier;
+package io.github.darkmun.pricetracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

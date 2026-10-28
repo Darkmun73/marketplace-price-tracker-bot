@@ -1,4 +1,4 @@
-package io.github.darkmun.pricenotifier.bot;
+package io.github.darkmun.pricetracker.bot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,11 +12,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Component
-public class NotifierTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
+public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
     private final TelegramClient client;
     private final String botToken;
 
-    public NotifierTelegramBot(@Value("${bot.token}") String botToken) {
+    public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
     }

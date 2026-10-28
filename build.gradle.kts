@@ -6,7 +6,7 @@ plugins {
 
 group = "io.github.darkmun"
 version = "0.0.1-SNAPSHOT"
-description = "MarketplacePriceNotifierBot"
+description = "MarketplacePriceTrackerBot"
 
 extra["jackson.version"] = "2.22.4"
 

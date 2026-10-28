@@ -1,7 +1,7 @@
-name: marketplace-price-notifier-bot
+name: marketplace-price-tracker-bot
 services:
   bot:
     build: .
-    image: price-notifier-bot:latest
+    image: price-tracker-bot:latest
     environment:
       - BOT_TOKEN

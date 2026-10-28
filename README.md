@@ -1,4 +1,4 @@
-# Marketplace Price Notifier Bot
+# Marketplace Price Tracker Bot
 
 Телеграм бот, отслеживающий изменение цены выбранных товаров и уведомляющий об этом пользователя.
 

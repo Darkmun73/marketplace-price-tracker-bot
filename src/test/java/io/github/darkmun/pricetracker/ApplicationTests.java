@@ -1,4 +1,4 @@
-package io.github.darkmun.pricenotifier;
+package io.github.darkmun.pricetracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

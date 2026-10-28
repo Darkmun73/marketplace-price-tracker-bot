@@ -1,1 +1,1 @@
-rootProject.name = "marketplace-price-notifier-bot"
+rootProject.name = "marketplace-price-tracker-bot"
