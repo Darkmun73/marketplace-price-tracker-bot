@@ -1,15 +1,11 @@
 plugins {
     java
     id("org.springframework.boot") version "4.1.1"
-    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "io.github.darkmun"
 version = "0.0.1-SNAPSHOT"
 description = "MarketplacePriceTrackerBot"
-
-extra["jackson.version"] = "2.22.4"
-
 
 java {
     toolchain {
@@ -22,6 +18,9 @@ repositories {
 }
 
 dependencies {
+    implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
+    implementation(platform("com.fasterxml.jackson:jackson-bom:2.22.4"))
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.projectlombok:lombok")
