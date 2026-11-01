@@ -1,8 +1,6 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
     java
-    id("org.springframework.boot") version "4.1.1"
+    alias(libs.plugins.spring.boot)
 }
 
 group = "io.github.darkmun"
@@ -20,27 +18,34 @@ repositories {
 }
 
 dependencies {
-    val springBOM = SpringBootPlugin.BOM_COORDINATES
-    implementation(platform(springBOM))
-    developmentOnly(platform(springBOM))
-    implementation(platform("com.fasterxml.jackson:jackson-bom:2.22.4"))
+    // bom
+    implementation(platform(libs.spring.boot.bom))
+    developmentOnly(platform(libs.spring.boot.bom))
+    implementation(platform(libs.jackson.bom))
 
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-configuration-processor")
-    implementation("org.projectlombok:lombok")
-    implementation("org.telegram:telegrambots-springboot-longpolling-starter:10.3.0")
-    implementation("org.telegram:telegrambots-client:10.3.0")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-flyway")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    runtimeOnly("org.postgresql:postgresql")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // telegram bot
+    implementation(libs.telegrambots.springboot.longpollingStarter)
+    implementation(libs.telegrambots.client)
 
-    //.env file support
-    developmentOnly(platform("me.paulschwarz:spring-dotenv-bom:5.1.0"))
-    developmentOnly("me.paulschwarz:springboot4-dotenv")
+    // tests
+    testImplementation(libs.spring.boot.starter.test)
+    testRuntimeOnly(libs.junit.platform.launcher)
+
+    // database
+    implementation(libs.spring.boot.starter.dataJPA)
+    implementation(libs.spring.boot.starter.flyway)
+    runtimeOnly(libs.flyway.database.postgresql)
+    runtimeOnly(libs.postgresql)
+
+    // .env file support
+    developmentOnly(platform(libs.spring.dotenv.bom))
+    developmentOnly(libs.springboot4.dotenv)
+
+    // other
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.boot.configurationProcessor)
+    implementation(libs.lombok)
+    developmentOnly(libs.spring.boot.dockerCompose)
 }
 
 tasks.withType<Test> {

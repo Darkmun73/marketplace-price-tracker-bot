@@ -1,0 +1,26 @@
+[versions]
+spring-boot = "4.1.1"
+jackson-v2 = "2.22.4"
+telegrambots = "10.3.0"
+spring-dotenv = "5.1.0"
+
+[libraries]
+spring-boot-bom = { group = "org.springframework.boot", name = "spring-boot-dependencies", version.ref = "spring-boot" }
+jackson-bom = { group = "com.fasterxml.jackson", name = "jackson-bom", version.ref = "jackson-v2"}
+spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter" }
+spring-boot-configurationProcessor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
+lombok = { group = "org.projectlombok", name = "lombok" }
+telegrambots-springboot-longpollingStarter = { group = "org.telegram", name = "telegrambots-springboot-longpolling-starter", version.ref = "telegrambots" }
+telegrambots-client = { group = "org.telegram", name = "telegrambots-client", version.ref = "telegrambots" }
+spring-boot-starter-dataJPA = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
+spring-boot-starter-flyway = { group = "org.springframework.boot", name = "spring-boot-starter-flyway" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+postgresql = { group = "org.postgresql", name = "postgresql" }
+spring-boot-dockerCompose = { group = "org.springframework.boot", name = "spring-boot-docker-compose" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+spring-dotenv-bom = { group = "me.paulschwarz", name = "spring-dotenv-bom", version.ref = "spring-dotenv" }
+springboot4-dotenv = { group = "me.paulschwarz", name = "springboot4-dotenv" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot"}
