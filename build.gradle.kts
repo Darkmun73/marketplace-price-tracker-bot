@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     java
     id("org.springframework.boot") version "4.1.1"
@@ -18,7 +20,9 @@ repositories {
 }
 
 dependencies {
-    implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
+    val springBOM = SpringBootPlugin.BOM_COORDINATES
+    implementation(platform(springBOM))
+    developmentOnly(platform(springBOM))
     implementation(platform("com.fasterxml.jackson:jackson-bom:2.22.4"))
 
     implementation("org.springframework.boot:spring-boot-starter")
@@ -31,6 +35,7 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     runtimeOnly("org.postgresql:postgresql")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     //.env file support
