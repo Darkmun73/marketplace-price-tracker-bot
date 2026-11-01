@@ -1,0 +1,10 @@
+name: marketplace-price-tracker-dev
+services:
+  db:
+    extends:
+      service: db
+      file: docker-compose.services.yml
+    ports:
+      - "5432"
+volumes:
+  dbdata:
