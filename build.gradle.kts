@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.spring.boot.configurationProcessor)
     implementation(libs.lombok)
     developmentOnly(libs.spring.boot.dockerCompose)
+    developmentOnly(libs.spring.boot.devtools)
 }
 
 tasks.withType<Test> {

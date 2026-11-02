@@ -21,6 +21,7 @@ spring-boot-dockerCompose = { group = "org.springframework.boot", name = "spring
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 spring-dotenv-bom = { group = "me.paulschwarz", name = "spring-dotenv-bom", version.ref = "spring-dotenv" }
 springboot4-dotenv = { group = "me.paulschwarz", name = "springboot4-dotenv" }
+spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot"}
