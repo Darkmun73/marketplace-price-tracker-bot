@@ -1,5 +1,6 @@
 package io.github.darkmun.pricetracker.bot;
 
+import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -11,14 +12,20 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+import java.util.Map;
+
 @Component
 public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
-    private final TelegramClient client;
     private final String botToken;
+    private final TelegramClient client;
 
-    public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken) {
+    private final Map<String, CommandHandler> commandHandlers;
+
+    public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken,
+                                   Map<String, CommandHandler> commandHandlers) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
+        this.commandHandlers = commandHandlers;
     }
 
     @Override
@@ -34,14 +41,24 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
     @Override
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            SendMessage sendMessage = new SendMessage(String.valueOf(update.getMessage().getChatId()),
-                    update.getMessage().getText());
-            try {
-                // Execute it
-                client.execute(sendMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            CommandHandler handler = commandHandlers.get(update.getMessage().getText());
+            if (handler != null)
+                handler.handle(update.getMessage(), client);
+            else
+                handleUnknownMessage(update.getMessage().getChatId());
+        }
+    }
+
+    private void handleUnknownMessage(Long chatId) {
+        SendMessage message = SendMessage
+                .builder()
+                .chatId(chatId)
+                .text("Эээ... Вы написали что-то не то")
+                .build();
+        try {
+            client.execute(message);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
         }
     }
 }
