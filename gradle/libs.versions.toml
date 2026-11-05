@@ -3,13 +3,13 @@ spring-boot = "4.1.1"
 jackson-v2 = "2.22.4"
 telegrambots = "10.3.0"
 spring-dotenv = "5.1.0"
+lombok-plugin = "9.8.3"
 
 [libraries]
 spring-boot-bom = { group = "org.springframework.boot", name = "spring-boot-dependencies", version.ref = "spring-boot" }
 jackson-bom = { group = "com.fasterxml.jackson", name = "jackson-bom", version.ref = "jackson-v2"}
 spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter" }
 spring-boot-configurationProcessor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
-lombok = { group = "org.projectlombok", name = "lombok" }
 telegrambots-springboot-longpollingStarter = { group = "org.telegram", name = "telegrambots-springboot-longpolling-starter", version.ref = "telegrambots" }
 telegrambots-client = { group = "org.telegram", name = "telegrambots-client", version.ref = "telegrambots" }
 spring-boot-starter-dataJPA = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
@@ -24,4 +24,5 @@ springboot4-dotenv = { group = "me.paulschwarz", name = "springboot4-dotenv" }
 spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
 
 [plugins]
+lombok = { id = "io.freefair.lombok", version.ref = "lombok-plugin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot"}

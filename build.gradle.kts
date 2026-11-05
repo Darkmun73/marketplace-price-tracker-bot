@@ -1,6 +1,7 @@
 plugins {
     java
     alias(libs.plugins.spring.boot)
+    alias(libs.plugins.lombok)
 }
 
 group = "io.github.darkmun"
@@ -44,7 +45,6 @@ dependencies {
     // other
     implementation(libs.spring.boot.starter)
     implementation(libs.spring.boot.configurationProcessor)
-    implementation(libs.lombok)
     developmentOnly(libs.spring.boot.dockerCompose)
     developmentOnly(libs.spring.boot.devtools)
 }
