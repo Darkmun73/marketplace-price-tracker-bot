@@ -1,8 +1,10 @@
 package io.github.darkmun.pricetracker.bot.handlers;
 
-import org.telegram.telegrambots.meta.api.objects.message.Message;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public interface CommandHandler {
-    void handle(Message message, TelegramClient client);
+@Getter
+@RequiredArgsConstructor
+public abstract class CommandHandler implements UpdateHandler {
+    private final String name;
 }

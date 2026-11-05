@@ -12,7 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
@@ -22,10 +24,14 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
     private final Map<String, CommandHandler> commandHandlers;
 
     public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken,
-                                   Map<String, CommandHandler> commandHandlers) {
+                                   List<CommandHandler> commandHandlers) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
-        this.commandHandlers = commandHandlers;
+        this.commandHandlers = commandHandlers
+                .stream()
+                .collect(Collectors.toMap(
+                        CommandHandler::getName,
+                        handler -> handler));
     }
 
     @Override
@@ -41,9 +47,9 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
     @Override
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            CommandHandler handler = commandHandlers.get(update.getMessage().getText());
+            var handler = commandHandlers.get(update.getMessage().getText());
             if (handler != null)
-                handler.handle(update.getMessage(), client);
+                handler.handle(update, client);
             else
                 handleUnknownMessage(update.getMessage().getChatId());
         }

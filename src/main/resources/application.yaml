@@ -10,3 +10,6 @@ spring:
     password: ${DB_PASS}
 bot:
   token: ${BOT_TOKEN}
+  commands:
+    start:
+      name: "/start"
