@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
@@ -46,7 +47,8 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
 
     @Override
     public void consume(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        UpdateType updateType = UpdateType.getFrom(update);
+        if (updateType == UpdateType.COMMAND) {
             var handler = commandHandlers.get(update.getMessage().getText());
             if (handler != null)
                 handler.handle(update, client);
