@@ -12,26 +12,26 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
     private final String botToken;
     private final TelegramClient client;
 
-    private final Map<String, CommandHandler> commandHandlers;
+    private final Map<String, CommandHandler> commandHandlers; // key — command name
 
     public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken,
-                                   List<CommandHandler> commandHandlers) {
+                                   BotCommandsProperties commandsProperties,
+                                   Map<String, CommandHandler> commandHandlersByHandlerName) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
-        this.commandHandlers = commandHandlers
-                .stream()
-                .collect(Collectors.toMap(
-                        CommandHandler::getName,
-                        handler -> handler));
+
+        this.commandHandlers = new HashMap<>();
+        commandsProperties.commands().forEach((commandName, config) -> {
+            this.commandHandlers.put(commandName, commandHandlersByHandlerName.get(config.handler()));
+        });
     }
 
     @Override
