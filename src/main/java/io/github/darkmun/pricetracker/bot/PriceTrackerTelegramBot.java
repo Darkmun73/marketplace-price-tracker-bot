@@ -1,6 +1,7 @@
 package io.github.darkmun.pricetracker.bot;
 
 import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
+import io.github.darkmun.pricetracker.bot.handlers.UnknownMessageHandler;
 import io.github.darkmun.pricetracker.utils.Commands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -8,14 +9,11 @@ import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Component
 public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
@@ -23,12 +21,15 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
     private final TelegramClient client;
 
     private final Map<String, CommandHandler> commandHandlers; // key — command name
+    private final UnknownMessageHandler unknownMessageHandler;
 
     public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken,
                                    BotCommandsProperties commandsProperties,
-                                   Map<String, CommandHandler> commandHandlersByHandlerName) {
+                                   Map<String, CommandHandler> commandHandlersByHandlerName,
+                                   UnknownMessageHandler unknownMessageHandler) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
+        this.unknownMessageHandler = unknownMessageHandler;
 
         this.commandHandlers = new HashMap<>();
         commandsProperties.commands().forEach((commandName, config) -> {
@@ -55,22 +56,12 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
             if (handler != null)
                 handler.handle(update, client);
             else
-                handleUnknownMessage(update.getMessage().getChatId());
+                unknownMessageHandler.handle(
+                        update, client,
+                        "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
+                );
         } else {
-            handleUnknownMessage(update.getMessage().getChatId());
-        }
-    }
-
-    private void handleUnknownMessage(Long chatId) {
-        SendMessage message = SendMessage
-                .builder()
-                .chatId(chatId)
-                .text("Эээ... Вы написали что-то не то")
-                .build();
-        try {
-            client.execute(message);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            unknownMessageHandler.handle(update, client);
         }
     }
 }
