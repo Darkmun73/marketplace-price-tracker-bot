@@ -11,5 +11,5 @@ spring:
 bot:
   token: ${BOT_TOKEN}
   commands:
-    "[/start]":
+    start:
       handler: startCommandHandler

@@ -1,6 +1,7 @@
 package io.github.darkmun.pricetracker.bot;
 
 import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
+import io.github.darkmun.pricetracker.utils.Commands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -49,7 +50,8 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
     public void consume(Update update) {
         UpdateType updateType = UpdateType.getFrom(update);
         if (updateType == UpdateType.COMMAND) {
-            var handler = commandHandlers.get(update.getMessage().getText());
+            var command = Commands.getFrom(update.getMessage().getText());
+            var handler = commandHandlers.get(command);
             if (handler != null)
                 handler.handle(update, client);
             else

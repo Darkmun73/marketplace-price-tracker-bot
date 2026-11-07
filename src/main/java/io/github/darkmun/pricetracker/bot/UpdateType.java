@@ -1,5 +1,6 @@
 package io.github.darkmun.pricetracker.bot;
 
+import io.github.darkmun.pricetracker.utils.Commands;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public enum UpdateType {
@@ -11,7 +12,7 @@ public enum UpdateType {
     public static UpdateType getFrom(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             var messageText = update.getMessage().getText();
-            if (messageText.startsWith("/"))
+            if (Commands.isCommand(messageText))
                 return COMMAND;
             else
                 return TEXT;
