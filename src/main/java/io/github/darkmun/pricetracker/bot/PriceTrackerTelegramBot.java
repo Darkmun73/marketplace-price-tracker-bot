@@ -56,6 +56,8 @@ public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer im
                 handler.handle(update, client);
             else
                 handleUnknownMessage(update.getMessage().getChatId());
+        } else {
+            handleUnknownMessage(update.getMessage().getChatId());
         }
     }
 
