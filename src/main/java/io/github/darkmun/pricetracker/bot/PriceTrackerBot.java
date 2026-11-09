@@ -45,22 +45,33 @@ public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements
     @Override
     public void consume(Update update) {
         UpdateType updateType = UpdateType.getFrom(update);
-        var message = update.getMessage();
-        if (updateType == UpdateType.COMMAND) { // TODO: different update types
-            var command = Commands.getFrom(message.getText());
-            var handler = commandHandlers.get(command);
-            if (handler != null)
-                handler.handle(message);
-            else
+        switch (updateType) {
+            case COMMAND -> {
+                var message = update.getMessage();
+                var command = Commands.getFrom(message.getText());
+                var handler = commandHandlers.get(command);
+                if (handler != null)
+                    handler.handle(message);
+                else
+                    messageManager.sendText(
+                            message.getChatId(),
+                            "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
+                    );
+            }
+            case TEXT, OTHER -> {
+                var message = update.getMessage();
                 messageManager.sendText(
                         message.getChatId(),
-                        "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
+                        "Эээ... Вы отправили что-то не то"
                 );
-        } else {
-            messageManager.sendText(
-                    message.getChatId(),
-                    "Эээ... Вы отправили что-то не то"
-            );
+            }
+            case INLINE_BUTTON -> {
+                var callbackQuery = update.getCallbackQuery();
+                messageManager.sendText(
+                        callbackQuery.getMessage().getChatId(),
+                        "Эта кнопка пока ничего не делает"
+                );
+            }
         }
     }
 }
