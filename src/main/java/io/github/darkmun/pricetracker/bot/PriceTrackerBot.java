@@ -16,17 +16,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class PriceTrackerTelegramBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
+public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
     private final String botToken;
     private final TelegramClient client;
 
     private final Map<String, CommandHandler> commandHandlers; // key — command name
     private final UnknownMessageHandler unknownMessageHandler;
 
-    public PriceTrackerTelegramBot(@Value("${bot.token}") String botToken,
-                                   BotCommandsProperties commandsProperties,
-                                   Map<String, CommandHandler> commandHandlersByHandlerName,
-                                   UnknownMessageHandler unknownMessageHandler) {
+    public PriceTrackerBot(@Value("${bot.token}") String botToken,
+                           BotCommandsProperties commandsProperties,
+                           Map<String, CommandHandler> commandHandlersByHandlerName,
+                           UnknownMessageHandler unknownMessageHandler) {
         this.botToken = botToken;
         client = new OkHttpTelegramClient(botToken);
         this.unknownMessageHandler = unknownMessageHandler;
