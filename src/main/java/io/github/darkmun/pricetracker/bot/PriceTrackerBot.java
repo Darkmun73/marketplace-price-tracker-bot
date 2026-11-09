@@ -9,7 +9,6 @@ import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsume
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,18 +16,15 @@ import java.util.Map;
 @Component
 public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements SpringLongPollingBot {
     private final String botToken;
-    private final TelegramClient client;
 
     private final Map<String, CommandHandler> commandHandlers; // key — command name
     private final UnknownMessageHandler unknownMessageHandler;
 
     public PriceTrackerBot(@Value("${bot.token}") String botToken,
-                           TelegramClient client,
                            BotCommandsProperties commandsProperties,
                            Map<String, CommandHandler> commandHandlersByHandlerName,
                            UnknownMessageHandler unknownMessageHandler) {
         this.botToken = botToken;
-        this.client = client;
         this.unknownMessageHandler = unknownMessageHandler;
 
         this.commandHandlers = new HashMap<>();
@@ -54,14 +50,14 @@ public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements
             var command = Commands.getFrom(update.getMessage().getText());
             var handler = commandHandlers.get(command);
             if (handler != null)
-                handler.handle(update, client);
+                handler.handle(update);
             else
                 unknownMessageHandler.handle(
-                        update, client,
+                        update,
                         "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
                 );
         } else {
-            unknownMessageHandler.handle(update, client);
+            unknownMessageHandler.handle(update);
         }
     }
 }

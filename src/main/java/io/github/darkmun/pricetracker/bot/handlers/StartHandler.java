@@ -11,13 +11,16 @@ import java.io.IOException;
 
 @Component("startCommandHandler")
 public class StartHandler extends CommandHandler {
-    String messageText = Resources.fileToString("bot-messages/start_message.md");
+    private final TelegramClient client;
+    private final String messageText;
 
-    public StartHandler() throws IOException {
+    public StartHandler(TelegramClient client) throws IOException {
+        this.client = client;
+        this.messageText = Resources.fileToString("bot-messages/start_message.md");
     }
 
     @Override
-    public void handle(Update update, TelegramClient client) {
+    public void handle(Update update) {
         var chatId = update.getMessage().getChatId();
 
         SendMessage sendMessage = SendMessage
