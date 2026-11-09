@@ -4,6 +4,7 @@ import io.github.darkmun.pricetracker.utils.Resources;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -20,8 +21,8 @@ public class StartHandler extends CommandHandler {
     }
 
     @Override
-    public void handle(Update update) {
-        var chatId = update.getMessage().getChatId();
+    public void handle(Message message) {
+        var chatId = message.getChatId();
 
         SendMessage sendMessage = SendMessage
                 .builder()

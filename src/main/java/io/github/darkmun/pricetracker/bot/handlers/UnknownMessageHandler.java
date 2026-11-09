@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -12,18 +13,18 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public class UnknownMessageHandler  {
     private final TelegramClient client;
 
-    public void handle(Update update) {
-        handle(update, "Эээ... Вы отправили что-то не то");
+    public void handle(Message message) {
+        handle(message, "Эээ... Вы отправили что-то не то");
     }
 
-    public void handle(Update update, String response) {
-        SendMessage message = SendMessage
+    public void handle(Message message, String response) {
+        SendMessage sendMessage = SendMessage
                 .builder()
-                .chatId(update.getMessage().getChatId())
+                .chatId(message.getChatId())
                 .text(response)
                 .build();
         try {
-            client.execute(message);
+            client.execute(sendMessage);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
