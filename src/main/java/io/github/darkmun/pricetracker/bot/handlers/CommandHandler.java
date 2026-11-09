@@ -1,4 +1,8 @@
 package io.github.darkmun.pricetracker.bot.handlers;
 
-public abstract class CommandHandler implements UpdateHandler {
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+public abstract class CommandHandler {
+    public abstract void handle(Update update, TelegramClient client);
 }

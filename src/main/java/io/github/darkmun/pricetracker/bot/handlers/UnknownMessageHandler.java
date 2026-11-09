@@ -7,8 +7,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Component
-public class UnknownMessageHandler implements UpdateHandler {
-    @Override
+public class UnknownMessageHandler  {
+
     public void handle(Update update, TelegramClient client) {
         handle(update, client, "Эээ... Вы отправили что-то не то");
     }
