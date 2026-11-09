@@ -5,7 +5,6 @@ import io.github.darkmun.pricetracker.bot.handlers.UnknownMessageHandler;
 import io.github.darkmun.pricetracker.utils.Commands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
@@ -24,11 +23,12 @@ public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements
     private final UnknownMessageHandler unknownMessageHandler;
 
     public PriceTrackerBot(@Value("${bot.token}") String botToken,
+                           TelegramClient client,
                            BotCommandsProperties commandsProperties,
                            Map<String, CommandHandler> commandHandlersByHandlerName,
                            UnknownMessageHandler unknownMessageHandler) {
         this.botToken = botToken;
-        client = new OkHttpTelegramClient(botToken);
+        this.client = client;
         this.unknownMessageHandler = unknownMessageHandler;
 
         this.commandHandlers = new HashMap<>();
