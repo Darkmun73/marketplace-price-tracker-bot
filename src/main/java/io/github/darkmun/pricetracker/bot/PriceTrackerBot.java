@@ -1,7 +1,6 @@
 package io.github.darkmun.pricetracker.bot;
 
 import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
-import io.github.darkmun.pricetracker.bot.handlers.UnknownMessageHandler;
 import io.github.darkmun.pricetracker.utils.Commands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,14 +17,14 @@ public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements
     private final String botToken;
 
     private final Map<String, CommandHandler> commandHandlers; // key — command name
-    private final UnknownMessageHandler unknownMessageHandler;
+    private final MessageManager messageManager;
 
     public PriceTrackerBot(@Value("${bot.token}") String botToken,
                            BotCommandsProperties commandsProperties,
                            Map<String, CommandHandler> commandHandlersByHandlerName,
-                           UnknownMessageHandler unknownMessageHandler) {
+                           MessageManager messageManager) {
         this.botToken = botToken;
-        this.unknownMessageHandler = unknownMessageHandler;
+        this.messageManager = messageManager;
 
         this.commandHandlers = new HashMap<>();
         commandsProperties.commands().forEach((commandName, config) -> {
@@ -53,12 +52,15 @@ public class PriceTrackerBot extends DefaultLongPollingUpdateConsumer implements
             if (handler != null)
                 handler.handle(message);
             else
-                unknownMessageHandler.handle(
-                        message,
+                messageManager.sendText(
+                        message.getChatId(),
                         "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
                 );
         } else {
-            unknownMessageHandler.handle(message);
+            messageManager.sendText(
+                    message.getChatId(),
+                    "Эээ... Вы отправили что-то не то"
+            );
         }
     }
 }

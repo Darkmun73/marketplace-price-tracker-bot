@@ -1,27 +1,22 @@
-package io.github.darkmun.pricetracker.bot.handlers;
+package io.github.darkmun.pricetracker.bot;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Component
 @RequiredArgsConstructor
-public class UnknownMessageHandler  {
+public class MessageManager {
     private final TelegramClient client;
 
-    public void handle(Message message) {
-        handle(message, "Эээ... Вы отправили что-то не то");
-    }
-
-    public void handle(Message message, String response) {
+    public void sendText(long chatId, String text) {
         SendMessage sendMessage = SendMessage
                 .builder()
-                .chatId(message.getChatId())
-                .text(response)
+                .chatId(chatId)
+                .parseMode("Markdown")
+                .text(text)
                 .build();
         try {
             client.execute(sendMessage);
