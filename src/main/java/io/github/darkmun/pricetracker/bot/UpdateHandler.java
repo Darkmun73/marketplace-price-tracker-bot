@@ -1,5 +1,6 @@
 package io.github.darkmun.pricetracker.bot;
 
+import io.github.darkmun.pricetracker.TextProvider;
 import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
 import io.github.darkmun.pricetracker.utils.Commands;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,14 @@ import java.util.Map;
 public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
     private final Map<String, CommandHandler> commandHandlers; // key — command name
     private final MessageManager messageManager;
+    private final TextProvider textProvider;
 
     public UpdateHandler(BotCommandsProperties commandsProperties,
-                           Map<String, CommandHandler> commandHandlersByHandlerName,
-                           MessageManager messageManager) {
+                         Map<String, CommandHandler> commandHandlersByHandlerName,
+                         MessageManager messageManager,
+                         TextProvider textProvider) {
         this.messageManager = messageManager;
+        this.textProvider = textProvider;
 
         this.commandHandlers = new HashMap<>();
         commandsProperties.commands().forEach((commandName, config) -> {
@@ -51,24 +55,28 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
         var handler = commandHandlers.get(command);
         if (handler != null)
             handler.handle(message);
-        else
-            messageManager.sendText(
-                    message.getChatId(),
-                    "Такой команды нет\uD83D\uDE2F Может вы где-нибудь опечатались?"
-            );
+        else {
+            var chatId = message.getChatId();
+            var languageCode = message.getFrom().getLanguageCode();
+            var messageText = textProvider.get("command.unknown", languageCode);
+
+            messageManager.sendText(chatId, messageText);
+        }
     }
 
     private void handleOtherMessage(Message message) {
-        messageManager.sendText(
-                message.getChatId(),
-                "Эээ... Вы отправили что-то не то"
-        );
+        var chatId = message.getChatId();
+        var languageCode = message.getFrom().getLanguageCode();
+        var messageText = textProvider.get("message.unknown", languageCode);
+
+        messageManager.sendText(chatId, messageText);
     }
 
     private void handleInlineButton(CallbackQuery callbackQuery) {
-        messageManager.sendText(
-                callbackQuery.getMessage().getChatId(),
-                "Эта кнопка пока ничего не делает"
-        );
+        var chatId = callbackQuery.getMessage().getChatId();
+        var languageCode = callbackQuery.getFrom().getLanguageCode();
+        var messageText = textProvider.get("inline-button.unknown", languageCode);
+
+        messageManager.sendText(chatId, messageText);
     }
 }
