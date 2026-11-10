@@ -33,7 +33,7 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
 
     @Override
     public void consume(Update update) {
-        UpdateType updateType = UpdateType.getFrom(update);
+        var updateType = UpdateType.getFrom(update);
         switch (updateType) {
             case COMMAND -> {
                 var message = update.getMessage();
@@ -51,31 +51,32 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
     }
 
     private void handleCommand(Message message) {
-        var command = Commands.getFrom(message.getText());
+        String command = Commands.getFrom(message.getText());
         var handler = commandHandlers.get(command);
-        if (handler != null)
+        if (handler != null) {
             handler.handle(message);
+        }
         else {
-            var chatId = message.getChatId();
-            var languageCode = message.getFrom().getLanguageCode();
-            var messageText = textProvider.get("command.unknown", languageCode);
+            long chatId = message.getChatId();
+            String languageCode = message.getFrom().getLanguageCode();
+            String messageText = textProvider.get("command.unknown", languageCode);
 
             messageManager.sendText(chatId, messageText);
         }
     }
 
     private void handleOtherMessage(Message message) {
-        var chatId = message.getChatId();
-        var languageCode = message.getFrom().getLanguageCode();
-        var messageText = textProvider.get("message.unknown", languageCode);
+        long chatId = message.getChatId();
+        String languageCode = message.getFrom().getLanguageCode();
+        String messageText = textProvider.get("message.unknown", languageCode);
 
         messageManager.sendText(chatId, messageText);
     }
 
     private void handleInlineButton(CallbackQuery callbackQuery) {
-        var chatId = callbackQuery.getMessage().getChatId();
-        var languageCode = callbackQuery.getFrom().getLanguageCode();
-        var messageText = textProvider.get("inline-button.unknown", languageCode);
+        long chatId = callbackQuery.getMessage().getChatId();
+        String languageCode = callbackQuery.getFrom().getLanguageCode();
+        String messageText = textProvider.get("inline-button.unknown", languageCode);
 
         messageManager.sendText(chatId, messageText);
     }

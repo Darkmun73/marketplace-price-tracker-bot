@@ -19,7 +19,7 @@ public class StartHandler extends CommandHandler {
 
     @Override
     public void handle(Message message) {
-        var chatId = message.getChatId();
+        long chatId = message.getChatId();
 
         messageManager.sendText(chatId, messageText);
     }

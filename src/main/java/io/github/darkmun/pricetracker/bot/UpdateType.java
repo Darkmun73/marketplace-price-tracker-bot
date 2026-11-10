@@ -11,11 +11,12 @@ public enum UpdateType {
 
     public static UpdateType getFrom(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            var messageText = update.getMessage().getText();
-            if (Commands.isCommand(messageText))
+            String messageText = update.getMessage().getText();
+            if (Commands.isCommand(messageText)) {
                 return COMMAND;
-            else
+            } else {
                 return TEXT;
+            }
         } else if (update.hasCallbackQuery()) {
             return INLINE_BUTTON;
         } else {
