@@ -1,7 +1,6 @@
 package io.github.darkmun.pricetracker.bot;
 
 import io.github.darkmun.pricetracker.TextProvider;
-import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
 import io.github.darkmun.pricetracker.utils.CommandResolver;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
@@ -9,26 +8,18 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
-    private final Map<String, CommandHandler> commandHandlers; // key — command name
     private final MessageManager messageManager;
     private final TextProvider textProvider;
+    private final CommandHandlersRegistry commandHandlersRegistry;
 
-    public UpdateHandler(BotCommandsProperties commandsProperties,
-                         Map<String, CommandHandler> commandHandlersByHandlerName,
-                         MessageManager messageManager,
-                         TextProvider textProvider) {
+    public UpdateHandler(MessageManager messageManager,
+                         TextProvider textProvider,
+                         CommandHandlersRegistry commandHandlersRegistry) {
         this.messageManager = messageManager;
         this.textProvider = textProvider;
-
-        this.commandHandlers = new HashMap<>();
-        commandsProperties.commands().forEach((commandName, config) -> {
-            this.commandHandlers.put(commandName, commandHandlersByHandlerName.get(config.handler()));
-        });
+        this.commandHandlersRegistry = commandHandlersRegistry;
     }
 
     @Override
@@ -52,7 +43,7 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
 
     private void handleCommand(Message message) {
         String command = CommandResolver.getFrom(message.getText());
-        var handler = commandHandlers.get(command);
+        var handler = commandHandlersRegistry.get(command);
         if (handler != null) {
             handler.handle(message);
         }
