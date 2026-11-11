@@ -9,10 +9,6 @@ public class CommandResolver {
 
     private static final Pattern commandPattern = Pattern.compile("^/\\w+$");
 
-    public static boolean isCommand(String messageText) {
-        return commandPattern.matcher(messageText).find();
-    }
-
     public static String resolveCommand(String messageText) {
         var matcher = commandPattern.matcher(messageText);
         if (!matcher.find()) return null;
