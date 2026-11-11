@@ -42,7 +42,7 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
     }
 
     private void handleCommand(Message message) {
-        String command = CommandResolver.getFrom(message.getText());
+        String command = CommandResolver.resolveCommand(message.getText());
         var handler = commandHandlersRegistry.get(command);
         if (handler != null) {
             handler.handle(message);

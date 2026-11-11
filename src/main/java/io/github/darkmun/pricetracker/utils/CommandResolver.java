@@ -13,13 +13,11 @@ public class CommandResolver {
         return commandPattern.matcher(messageText).find();
     }
 
-    public static String getFrom(String messageText) {
+    public static String resolveCommand(String messageText) {
         var matcher = commandPattern.matcher(messageText);
-        if (matcher.find()) {
-            String commandWithSlash = matcher.group();
-            return commandWithSlash.substring(1);
-        } else {
-            return null;
-        }
+        if (!matcher.find()) return null;
+
+        String commandWithSlash = matcher.group();
+        return commandWithSlash.substring(1);
     }
 }
