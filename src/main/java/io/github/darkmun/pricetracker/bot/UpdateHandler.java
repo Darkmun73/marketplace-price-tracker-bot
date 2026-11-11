@@ -2,7 +2,7 @@ package io.github.darkmun.pricetracker.bot;
 
 import io.github.darkmun.pricetracker.TextProvider;
 import io.github.darkmun.pricetracker.bot.handlers.CommandHandler;
-import io.github.darkmun.pricetracker.utils.Commands;
+import io.github.darkmun.pricetracker.utils.CommandResolver;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -51,7 +51,7 @@ public class UpdateHandler extends DefaultLongPollingUpdateConsumer {
     }
 
     private void handleCommand(Message message) {
-        String command = Commands.getFrom(message.getText());
+        String command = CommandResolver.getFrom(message.getText());
         var handler = commandHandlers.get(command);
         if (handler != null) {
             handler.handle(message);

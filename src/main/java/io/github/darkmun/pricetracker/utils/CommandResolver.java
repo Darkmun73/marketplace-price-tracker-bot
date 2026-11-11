@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * Works with telegram bot commands
  */
-public class Commands {
+public class CommandResolver {
 
     private static final Pattern commandPattern = Pattern.compile("^/\\w+$");
 
