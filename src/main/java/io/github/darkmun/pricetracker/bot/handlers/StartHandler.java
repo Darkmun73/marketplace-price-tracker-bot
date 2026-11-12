@@ -10,20 +10,13 @@ import java.io.IOException;
 @Component("startCommandHandler")
 public class StartHandler extends CommandHandler {
     private final MessageManager messageManager;
-    private final TextProvider textProvider;
 
-    public StartHandler(MessageManager messageManager,
-                        TextProvider textProvider) throws IOException {
+    public StartHandler(MessageManager messageManager) throws IOException {
         this.messageManager = messageManager;
-        this.textProvider = textProvider;
     }
 
     @Override
     public void handle(Message message) {
-        long chatId = message.getChatId();
-        String languageCode = message.getFrom().getLanguageCode();
-
-        String messageText = textProvider.get("command.start", languageCode);
-        messageManager.sendText(chatId, messageText);
+        messageManager.reply(message, "command.start");
     }
 }
