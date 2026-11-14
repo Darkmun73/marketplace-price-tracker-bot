@@ -1,6 +1,5 @@
 package io.github.darkmun.pricetracker.bot;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -10,7 +9,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public class PriceTrackerBotConfiguration {
 
     @Bean
-    public TelegramClient telegramClient(@Value("${bot.token}") String botToken) {
-        return new OkHttpTelegramClient(botToken);
+    public TelegramClient telegramClient(BotProperties botProperties) {
+        return new OkHttpTelegramClient(botProperties.token());
     }
 }

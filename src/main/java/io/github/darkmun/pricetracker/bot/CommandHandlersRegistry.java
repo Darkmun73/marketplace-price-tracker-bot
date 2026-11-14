@@ -11,7 +11,7 @@ public class CommandHandlersRegistry {
     private final Map<String, CommandHandler> handlers; // key — command name
 
     public CommandHandlersRegistry(
-            BotCommandsProperties properties,
+            BotProperties properties,
             Map<String, CommandHandler> handlersByBeanName
     ) {
         var result = new HashMap<String, CommandHandler>();

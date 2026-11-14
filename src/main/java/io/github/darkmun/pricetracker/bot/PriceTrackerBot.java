@@ -1,6 +1,5 @@
 package io.github.darkmun.pricetracker.bot;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
@@ -10,8 +9,8 @@ public class PriceTrackerBot implements SpringLongPollingBot {
     private final String botToken;
     private final UpdateHandler updateHandler;
 
-    public PriceTrackerBot(@Value("${bot.token}") String botToken, UpdateHandler updateHandler) {
-        this.botToken = botToken;
+    public PriceTrackerBot(BotProperties botProperties, UpdateHandler updateHandler) {
+        this.botToken = botProperties.token();
         this.updateHandler = updateHandler;
     }
 
