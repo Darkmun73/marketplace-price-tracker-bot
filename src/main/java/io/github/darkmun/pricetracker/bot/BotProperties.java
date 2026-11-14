@@ -9,5 +9,5 @@ public record BotProperties(
         String token,
         Map<String, CommandConfig> commands
 ) {
-    public record CommandConfig(String handler) {}
+    public record CommandConfig(String description, boolean visible, String handler) {}
 }

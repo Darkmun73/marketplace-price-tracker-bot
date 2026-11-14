@@ -12,4 +12,6 @@ bot:
   token: ${BOT_TOKEN}
   commands:
     start:
+      description: Command for starting bot
+      visible: true
       handler: startCommandHandler
