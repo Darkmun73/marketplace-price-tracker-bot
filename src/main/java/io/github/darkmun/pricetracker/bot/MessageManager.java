@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Component
 @RequiredArgsConstructor
-public class MessageManager {
+public class MessageManager implements MessageSender {
     private final TelegramClient client;
     private final TextProvider textProvider;
 
@@ -29,10 +29,6 @@ public class MessageManager {
         }
     }
 
-    /**
-     * @param message message to reply
-     * @param key key referring to text from messages.md
-     */
     public void reply(Message message, String key) {
         long chatId = message.getChatId();
         String languageCode = message.getFrom().getLanguageCode();
@@ -41,10 +37,6 @@ public class MessageManager {
         sendText(chatId, messageText);
     }
 
-    /**
-     * @param callbackQuery callback query to reply
-     * @param key key referring to text from messages.md
-     */
     public void reply(CallbackQuery callbackQuery, String key) {
         long chatId = callbackQuery.getMessage().getChatId();
         String languageCode = callbackQuery.getFrom().getLanguageCode();

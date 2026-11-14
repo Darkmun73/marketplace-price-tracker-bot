@@ -1,15 +1,15 @@
 package io.github.darkmun.pricetracker.bot.updates;
 
-import io.github.darkmun.pricetracker.bot.MessageManager;
+import io.github.darkmun.pricetracker.bot.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class CallbackUpdateProcessor implements UpdateProcessor {
-    private final MessageManager messageManager;
+    private final MessageSender messageSender;
 
-    public CallbackUpdateProcessor(MessageManager messageManager) {
-        this.messageManager = messageManager;
+    public CallbackUpdateProcessor(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -20,6 +20,6 @@ public class CallbackUpdateProcessor implements UpdateProcessor {
     @Override
     public void handle(Update update) {
         var callbackQuery = update.getCallbackQuery();
-        messageManager.reply(callbackQuery, "inline-button.unknown");
+        messageSender.reply(callbackQuery, "inline-button.unknown");
     }
 }
